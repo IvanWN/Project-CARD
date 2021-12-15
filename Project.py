@@ -231,4 +231,4 @@ if __name__ == "__main__":
     deck = choice_deck()
     list_stack = []
     card = dict(color=' ', value=' ')
-    print(install_manual_mod(deck, max_nb_stack=5, backspin=False, show=True))
+    print(install_manual_mod(deck, max_nb_stack=5, backspin=True, show=True))
