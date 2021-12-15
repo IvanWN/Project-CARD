@@ -2,6 +2,7 @@
 import pytest
 from Project import combination, if_possible, choice_deck, step_success
 
+
 # Проверка наличия всех карт в коллоде
 def test_choice_deck():
     deck = choice_deck()
@@ -9,6 +10,7 @@ def test_choice_deck():
     card2 = {'color': 'П', 'value': '9'}
     choice_deck()
     assert card1 in deck and card2 in deck
+
 
 # Проверка исправной работы комбинаций
 def test_combination():
@@ -24,12 +26,14 @@ def test_combination():
     card2 = {'color': '♣', 'value': '7'}
     assert not combination(card1, card2)
 
+
 # Проверка корректной работы прыжков
 def test_if_possible():
     num_stack = 4
     list_stack = [{'color': '♢', 'value': '9'}, {'color': '♣', 'value': '7'}, {'color': '♢', 'value': 'К'}]
     if_possible(list_stack, num_stack)
     assert not if_possible(list_stack, num_stack)
+
 
 # Проверка корректного добавления первой карты из коллоды на стол и не подмешал дубляжа (Без мошенничества со стороны диллера :) )
 def test_step_success_test():

@@ -1,9 +1,16 @@
-# Пробник проект АиП:
+# Проект АиП:
 
-import random # Импортирование библиотек
+# Импортирование библиотек
+import random
 from PIL import Image
 
-def card_to_channel(card): # Задаем мощности (силы) и масти карт
+
+# Задаем мощности (силы) и масти карт
+def card_to_channel(card):
+    """
+    Функция заменяет буквы масти на символы
+    и задает одинаковую длину для каждой карты.
+    """
     if card['color'] == 'П':
         card['color'] = chr(9824)
     if card['color'] == 'Ч':
@@ -17,12 +24,15 @@ def card_to_channel(card): # Задаем мощности (силы) и мас�
     else:
         return ' ' + card['value'] + card['color']
 
-def show_success(deck): # Печатаем карты
-    for i in range(len(deck)):
-        print(card_to_channel(deck[i]), end = ' ')
-    print('\n')
 
-def choice_deck(): # Задаем колоду
+# Задаем колоду
+def choice_deck():
+    """
+    Создаем колоду игральных карт,
+    с помощью values и colors, отвечающих за мощность и масть карт,
+    и перемешивания их в произвольном порядке (random.).
+    Функция возвращает deck - готовую к использованию колоду.
+    """
     values = ['7', '8', '9', '10', 'В', 'Д', 'К', 'Т']
     colors = ['П', 'Ч', 'Б', 'К']
     deck = []
@@ -30,7 +40,7 @@ def choice_deck(): # Задаем колоду
     while i < len(values):
         j = 0
         while j < len(colors):
-            card = {'color': ' ' , 'value' : ' '}
+            card = dict(color=' ', value=' ')
             card['color'] = colors[j]
             card['value'] = values[i]
             deck.append(card)
@@ -39,7 +49,13 @@ def choice_deck(): # Задаем колоду
     random.shuffle(deck)
     return deck
 
-def combination(card1, card2): # Проверяем наличие комбинаций
+
+# Проверяем наличие комбинаций
+def combination(card1, card2):
+    """
+    Функция проверяет наличие комбинаций карт,
+    комбинации - равность мастей или мощностей.
+    """
     value1 = card1['value']
     color1 = card1['color']
     value2 = card2['value']
@@ -49,8 +65,13 @@ def combination(card1, card2): # Проверяем наличие комбин�
     else:
         return False
 
-def if_possible(list_stack, num_stack): # Проверяем возможность прыжка
+
+# Проверяем возможность прыжка
+def if_possible(list_stack, num_stack):
+    """Функция проверяет возможность прыжка и делает прыжок, исключая неправильные команды."""
     if num_stack >= len(list_stack) - 1:
+        return False
+    elif type(num_stack) != int:
         return False
     else:
         card1 = list_stack[num_stack - 1]
@@ -62,79 +83,96 @@ def if_possible(list_stack, num_stack): # Проверяем возможнос�
         else:
             return False
 
-def display_stack(list_stack): # Печатаем стол карт
+
+# Печатаем стол карт
+def display_stack(list_stack):
+    """Функция выводит карты из list_stack на стол."""
     for i in range(len(list_stack)):
-        print(card_to_channel(list_stack[i]), end = ' ')
+        print(card_to_channel(list_stack[i]), end=' ')
     return ''
 
-def step_success(list_stack, deck, show = False): # Добавляем карты на стол и расчитываем возможность прыжка
+
+# Добавляем карты на стол и расчитываем возможность прыжка
+def step_success(list_stack, deck, show=False):
+    """
+    Функция делает все возможные прыжки предпослдней картой
+    и выводит действия прыжков в автоигре.
+    """
     list_stack.append(deck[0])
     if show:
-        print(display_stack(list_stack), '\n') #!!!!!
+        print(display_stack(list_stack), '\n')
     del(deck[0])
     res = if_possible(list_stack, list_stack.index(list_stack[-2]))
     if res and show:
         print(display_stack(list_stack), '\n')
-    while res == True and len(list_stack) > 2:
+    while res and len(list_stack) > 2:
         i = 1
         k = 0
         while i < len(list_stack) - 1 and k == 0:
             res = if_possible(list_stack, list_stack.index(list_stack[i]))
-            if res == True:
+            if res:
                 if show:
                     print(display_stack(list_stack), '\n')
                 k += 1
             i += 1
     for item in list_stack:
-        if item['color'] == chr(9824):
-            item['color'] = 'П'
-        if item['color'] == chr(9825):
-            item['color'] = 'Ч'
-        if item['color'] == chr(9826):
-            item['color'] = 'Б'
-        if item['color'] == chr(9827):
-            item['color'] = 'К'
+        item = card_to_channel(item)
+    return ''
 
-def install_auto_mod(deck, show = False): # Автоигра
+
+# Автоигра
+def install_auto_mod(deck):
+    """Автоигра используемая для определения оптимального матча в подкрутке."""
     list_stack = []
-    if show:
-        print(display_stack(deck), '\n')
     set = deck.copy()
+    i = 0
+    while i < 3:
+        list_stack.append(set[0])
+        del(set[0])
+        i += 1
     num_stack = len(list_stack) - 2
-    s = if_possible(list_stack, num_stack)
-    if s and show:
-        print(display_stack(list_stack), '\n')
-    while len(set) > 0: # !!!!!!
-        if show:
-            step_success(list_stack, set, show = True)
-        else:
-            step_success(list_stack, set, show = False)
+    if_possible(list_stack, num_stack)
+    while len(set) > 0:
+        step_success(list_stack, set, show=False)
+    for item in list_stack:
+        item = card_to_channel(item)
+    for item in deck:
+        item = card_to_channel(item)
     return list_stack
 
-def response_menu(): # Меню
+
+# Меню
+def response_menu():
+    """Функция печатает перечень действий игроку и фиксирует его выбор."""
     print("1. Достать карту ('1')\n2. Прыжок ('2')\n3. Автоматически закончить партию ('3')\n4. Сдаться/выйти ('4')")
     res = input()
     return res
 
-def request_jump(list_stack): # Прыжковое меню
+
+# Прыжковое меню
+def request_jump(list_stack):
+    """Функция проверяет корректный ли знак введен для прыжка."""
     i = int(input('Укажите индекс карты которая должна совершить прыжок:'))
     while i < 1 or list_stack.index(list_stack[i]) >= list_stack.index(list_stack[-1]):
         i = int(input('Попробуйте еще раз:'))
     return i
 
-def install_manual_mod(deck, max_nb_stack = 2, backspin = False): # Ручной режим игры
+
+# Ручной режим игры
+def install_manual_mod(deck, max_nb_stack=2, backspin=False, show=False):
+    """Функция позволяет вручную играть в данную карточную игру."""
     if backspin:
         deck = best_consistent_exchange(deck)
     bib = deck.copy()
-    img1 = Image.open('NotStonks.jpg')  # Открываем фото реакций
+    img1 = Image.open('NotStonks.jpg')
     img2 = Image.open('Stonks.jpg')
     list_stack = [bib[0], bib[1], bib[2]]
-    del(bib[0], bib[0], bib[0])
+    del (bib[0], bib[0], bib[0])
     print(display_stack(list_stack))
     res = response_menu()
     while res != '4' and len(bib) > 0:
         if res != '1' and res != '2' and res != '3' and res != '4':
-            res = input('Попробуйте еще раз:')
+            res = input('Введите правильную команду:')
         if res == '1':
             list_stack.append(bib[0])
             del(bib[0])
@@ -147,17 +185,13 @@ def install_manual_mod(deck, max_nb_stack = 2, backspin = False): # Ручной
             else:
                 k = request_jump(list_stack)
                 s = if_possible(list_stack, k)
-                if s == False:
+                if not s:
                     print('Прыжок невозможен')
                 print(display_stack(list_stack))
                 res = response_menu()
         if res == '3':
-            num_stack = len(list_stack) - 2
-            q = if_possible(list_stack, num_stack)
-            if q:
-                print(display_stack(list_stack))
             while len(bib) > 0:
-                step_success(list_stack, bib, show = True)
+                step_success(list_stack, bib, show)
     if res == '4':
         while len(bib) > 0:
             list_stack.append(bib[0])
@@ -171,32 +205,30 @@ def install_manual_mod(deck, max_nb_stack = 2, backspin = False): # Ручной
     list_stack = display_stack(list_stack)
     return list_stack
 
-def launching_success(mod, show = False, max_nb_stack = 2): # Выбор режима игры
-    deck = choice_deck()
-    if mod == 'auto':
-        list_stack = install_auto_mod(deck, show)
-    elif mod == 'manual':
-        list_stack = install_manual_mod(deck, max_nb_stack)
-    return list_stack
 
-def best_consistent_exchange(deck): # Подкрутка (по умолчанию включена)
-    res = install_auto_mod(deck, show = False)
+# Подкрутка (по умолчанию включена)
+def best_consistent_exchange(deck):
+    """
+    Функция меняет в колоде местами такие 2 соседние карты,
+    чтобы минимизировать колличество карт в конце игры.
+    """
+    res = install_auto_mod(deck)
     w = len(res)
     i = 0
     while i < len(deck) - 1:
         qwert = deck.copy()
-        a = qwert[i]
-        qwert[i] = qwert[i + 1]
-        qwert[i + 1] = a
-        bor = install_auto_mod(qwert, show = False)
+        qwert[i + 1], qwert[i] = qwert[i], qwert[i + 1]
+        bor = install_auto_mod(qwert)
         if len(bor) <= w:
             colod = qwert.copy()
             w = len(bor)
         i += 1
     return colod
 
-if __name__=="__main__": # ИТОГ
+
+# ИТОГ
+if __name__ == "__main__":
     deck = choice_deck()
     list_stack = []
-    card = {'value' : ' ' , 'color' : ' '}
-    print(install_manual_mod(deck, max_nb_stack = 5, backspin = False))
+    card = dict(color=' ', value=' ')
+    print(install_manual_mod(deck, max_nb_stack=5, backspin=False, show=True))
