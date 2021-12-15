@@ -68,7 +68,10 @@ def combination(card1, card2):
 
 # Проверяем возможность прыжка
 def if_possible(list_stack, num_stack):
-    """Функция проверяет возможность прыжка и делает прыжок, исключая неправильные команды."""
+    """
+    Функция проверяет возможность прыжка и делает прыжок,
+    сключая неправильные команды.
+    """
     if num_stack >= len(list_stack) - 1:
         return False
     elif type(num_stack) != int:
