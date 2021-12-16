@@ -93,7 +93,6 @@ def display_stack(list_stack):
     """Функция выводит карты из list_stack на стол."""
     for i in range(len(list_stack)):
         print(card_to_channel(list_stack[i]), end=' ')
-    return ''
 
 
 # Добавляем карты на стол и расчитываем возможность прыжка
@@ -121,7 +120,6 @@ def step_success(list_stack, deck, show=False):
             i += 1
     for item in list_stack:
         item = card_to_channel(item)
-    return ''
 
 
 # Автоигра
