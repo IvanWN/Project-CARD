@@ -17,11 +17,11 @@ def test_combination():
     card1 = {'color': '♣', 'value': 'Т'}
     card2 = {'color': '♢', 'value': 'Т'}
     combination(card1, card2)
-    assert True
+    assert combination(card1, card2)
     card1 = {'color': '♣', 'value': 'Т'}
     card2 = {'color': '♣', 'value': '7'}
     combination(card1, card2)
-    assert True
+    assert combination(card1, card2)
     card1 = {'color': '♢', 'value': 'Т'}
     card2 = {'color': '♣', 'value': '7'}
     assert not combination(card1, card2)
