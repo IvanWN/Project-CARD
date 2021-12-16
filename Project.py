@@ -189,7 +189,7 @@ def request_jump(list_stack):
 def install_manual_mod(deck, max_nb_stack=5, backspin=False, show=False):
     """
     Функция позволяет вручную играть в данную карточную игру.
-    Возврвщает list_stack - итоговый стол карт.
+    Возврвщает итоговый стол карт.
     show - позволяет видеть промежуточные действия;
     backspin - проверяет включенность подкрутки;
     deck - колода карт;
