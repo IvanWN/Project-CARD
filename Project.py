@@ -98,7 +98,7 @@ def if_possible(list_stack, num_stack):
 # Печатаем стол карт
 def display_stack(list_stack):
     """
-    Функция выводит карты из list_stack в консоль.
+    Функция выводит карты со стола карт в консоль.
     list_stack - стол карт.
     """
     for i in range(len(list_stack)):
@@ -139,7 +139,7 @@ def step_success(list_stack, deck, show=False):
 def install_auto_mod(deck):
     """
     Автоигра используемая для определения оптимального матча в подкрутке.
-    Возвращает list_stack.
+    Возвращает стол карт.
     list_stack - стол карт;
     deck - колода карт.
     """
