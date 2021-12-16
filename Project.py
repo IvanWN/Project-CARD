@@ -139,7 +139,7 @@ def step_success(list_stack, deck, show=False):
 def install_auto_mod(deck):
     """
     Автоигра используемая для определения оптимального матча в подкрутке.
-    Возвращает list_stack - используется для подкрутки.
+    Возвращает list_stack.
     list_stack - стол карт;
     deck - колода карт.
     """
